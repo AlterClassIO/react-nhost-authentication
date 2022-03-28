@@ -1,5 +1,7 @@
+import SignUp from './components/SignUp';
+
 function App() {
-  return <h1 className="text-3xl font-bold underline">Hello, Nhost!</h1>;
+  return <SignUp />;
 }
 
 export default App;
