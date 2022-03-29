@@ -10,7 +10,7 @@ import {
 } from '@heroicons/react/outline';
 
 const Avatar = props => (
-  <img width={35} height={35} className="rounded-full" {...props} />
+  <img width={35} height={35} className="rounded-full bg-gray-100" {...props} />
 );
 
 const Layout = () => {
@@ -37,7 +37,7 @@ const Layout = () => {
 
   return (
     <div>
-      <header className="fixed top-0 inset-x-0 h-[60px] shadow">
+      <header className="fixed top-0 inset-x-0 h-[60px] shadow bg-white">
         <div className="container mx-auto px-4 py-3 flex justify-between">
           <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
 
@@ -101,7 +101,7 @@ const Layout = () => {
       </header>
 
       <main className="mt-[60px]">
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mx-auto px-4 py-12">
           <Outlet />
         </div>
       </main>

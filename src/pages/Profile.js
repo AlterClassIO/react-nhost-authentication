@@ -1,7 +1,22 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useNhostAuth } from '@nhost/react';
+import { nhost } from '../lib/nhost';
+import { toast } from 'react-hot-toast';
 import Input from '../components/Input';
+
+const UPDATE_USER_QUERY = `
+  mutation ($id: uuid!, $displayName: String!, $metadata: jsonb) {
+    updateUser(
+      pk_columns: { id: $id },
+      _set: { displayName: $displayName, metadata: $metadata }
+    ) {
+      id
+      displayName
+      metadata
+    }
+  }
+`;
 
 const Profile = () => {
   const { user } = useNhostAuth();
@@ -15,9 +30,23 @@ const Profile = () => {
     lastName !== user?.metadata?.lastName ||
     email !== user?.email;
 
-  const updateUserData = async e => {
+  const updateUserProfile = async e => {
     e.preventDefault();
-    // TODO
+
+    const { data, error } = await nhost.graphql.request(UPDATE_USER_QUERY, {
+      id: user.id,
+      displayName: `${firstName} ${lastName}`.trim(),
+      metadata: {
+        firstName,
+        lastName,
+      },
+    });
+
+    if (error) {
+      toast.error('Unable to update profile', { id: 'updateProfile' });
+    } else if (data) {
+      toast.success('Updated successfully', { id: 'updateProfile' });
+    }
   };
 
   return (
@@ -29,13 +58,13 @@ const Profile = () => {
       <div className="flex flex-col lg:flex-row lg:justify-between gap-4 lg:gap-8">
         <div className="sm:min-w-[320px]">
           <h2 className="text-lg sm:text-xl">Profile</h2>
-          <p className="mt-1 text-sm text-gray-500 leading-tight">
+          <p className="mt-1 text-gray-500 leading-tight">
             You can update your personal information.
           </p>
         </div>
 
-        <div className="rounded-md shadow-md border border-opacity-50 w-full max-w-screen-md overflow-hidden">
-          <form onSubmit={updateUserData}>
+        <div className="rounded-md shadow-md border border-opacity-50 w-full max-w-screen-md overflow-hidden bg-white">
+          <form onSubmit={updateUserProfile}>
             <div className="px-4 md:px-8 py-6 space-y-6">
               <div className="flex flex-col sm:flex-row gap-6">
                 <Input
