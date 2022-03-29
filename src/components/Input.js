@@ -10,7 +10,7 @@ const Input = ({ type = 'text', label = '', ...props }) => {
         type={type}
         value={null}
         onChange={null}
-        className="w-full shadow-sm rounded-md p-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-4 focus:ring-opacity-20 transition disabled:opacity-50 disabled:cursor-not-allowed"
+        className="w-full shadow-sm rounded-md p-3 border border-gray-300 focus:border-blue-500 focus:ring-blue-500 focus:outline-none focus:ring-4 focus:ring-opacity-20 transition disabled:opacity-50 disabled:cursor-not-allowed read-only:opacity-50 read-only:cursor-not-allowed read-only:focus:border-gray-300 read-only:focus:ring-0"
         {...props}
       />
     </div>

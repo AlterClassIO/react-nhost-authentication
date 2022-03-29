@@ -23,12 +23,10 @@ const Profile = () => {
 
   const [firstName, setFirstName] = useState(user?.metadata?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.metadata?.lastName ?? '');
-  const [email, setEmail] = useState(user?.email ?? '');
 
-  const isFormDirty =
-    firstName !== user?.metadata?.firstName ||
-    lastName !== user?.metadata?.lastName ||
-    email !== user?.email;
+  const isFirstNameDirty = firstName !== user?.metadata?.firstName;
+  const isLastNameDirty = lastName !== user?.metadata?.lastName;
+  const isFormDirty = isFirstNameDirty || isLastNameDirty;
 
   const updateUserProfile = async e => {
     e.preventDefault();
@@ -86,9 +84,8 @@ const Profile = () => {
                 <Input
                   type="email"
                   label="Email address"
-                  value={email}
-                  onChange={e => setEmail(e.target.value)}
-                  required
+                  value={user?.email}
+                  readOnly
                 />
               </div>
             </div>
