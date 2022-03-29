@@ -37,7 +37,7 @@ const Layout = () => {
 
   return (
     <div>
-      <header className="shadow">
+      <header className="fixed top-0 inset-x-0 h-[60px] shadow">
         <div className="container mx-auto px-4 py-3 flex justify-between">
           <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
 
@@ -100,8 +100,8 @@ const Layout = () => {
         </div>
       </header>
 
-      <main>
-        <div className="container mx-auto px-4 py-6">
+      <main className="mt-[60px]">
+        <div className="container mx-auto px-4 py-8">
           <Outlet />
         </div>
       </main>
