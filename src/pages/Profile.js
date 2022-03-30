@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useNhostAuth } from '@nhost/react';
+import { useUserData } from '@nhost/react';
 import { nhost } from '../lib/nhost';
 import { toast } from 'react-hot-toast';
 import Input from '../components/Input';
@@ -19,7 +19,7 @@ const UPDATE_USER_QUERY = `
 `;
 
 const Profile = () => {
-  const { user } = useNhostAuth();
+  const user = useUserData();
 
   const [firstName, setFirstName] = useState(user?.metadata?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.metadata?.lastName ?? '');

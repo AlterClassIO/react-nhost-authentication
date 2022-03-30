@@ -1,8 +1,8 @@
-import { useNhostAuth } from '@nhost/react';
+import { useUserData } from '@nhost/react';
 import { Helmet } from 'react-helmet';
 
 const Dashboard = () => {
-  const { user } = useNhostAuth();
+  const user = useUserData();
 
   return (
     <>

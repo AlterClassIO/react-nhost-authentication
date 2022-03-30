@@ -1,5 +1,5 @@
 import { Fragment } from 'react';
-import { useNhostAuth, useSignOut } from '@nhost/react';
+import { useUserData, useSignOut } from '@nhost/react';
 import { Outlet, Link } from 'react-router-dom';
 import { Menu, Transition } from '@headlessui/react';
 import {
@@ -9,12 +9,18 @@ import {
   UserIcon,
 } from '@heroicons/react/outline';
 
-const Avatar = props => (
-  <img width={35} height={35} className="rounded-full bg-gray-100" {...props} />
+const Avatar = ({ src = '', alt = '' }) => (
+  <img
+    width={35}
+    height={35}
+    className="rounded-full bg-gray-100"
+    src={src}
+    alt={alt}
+  />
 );
 
 const Layout = () => {
-  const { user } = useNhostAuth();
+  const user = useUserData();
   const { signOut } = useSignOut();
 
   const menuItems = [
