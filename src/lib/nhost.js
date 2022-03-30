@@ -1,7 +1,7 @@
 import { NhostClient } from '@nhost/react';
 
 const nhost = new NhostClient({
-  backendUrl: 'https://dsbhnuqsefhuwqsbhjbl.nhost.run',
+  backendUrl: process.env.REACT_APP_NHOST_BACKEND_URL,
 });
 
 export { nhost };
