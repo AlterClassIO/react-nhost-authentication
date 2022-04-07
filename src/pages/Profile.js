@@ -1,14 +1,14 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
 import { useUserData, useChangePassword } from '@nhost/react';
-import { nhost } from '../lib/nhost';
+import { gql, useMutation } from '@apollo/client';
 import { toast } from 'react-hot-toast';
 import Input from '../components/Input';
 
-const UPDATE_USER_QUERY = `
+const UPDATE_USER_QUERY = gql`
   mutation ($id: uuid!, $displayName: String!, $metadata: jsonb) {
     updateUser(
-      pk_columns: { id: $id },
+      pk_columns: { id: $id }
       _set: { displayName: $displayName, metadata: $metadata }
     ) {
       id
@@ -21,7 +21,10 @@ const UPDATE_USER_QUERY = `
 const Profile = () => {
   const user = useUserData();
 
-  const { changePassword, isLoading } = useChangePassword();
+  const { changePassword, isLoading: updatingPassword } = useChangePassword();
+
+  const [mutateUser, { loading: updatingProfile }] =
+    useMutation(UPDATE_USER_QUERY);
 
   const [firstName, setFirstName] = useState(user?.metadata?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.metadata?.lastName ?? '');
@@ -37,19 +40,20 @@ const Profile = () => {
   const updateUserProfile = async e => {
     e.preventDefault();
 
-    const { data, error } = await nhost.graphql.request(UPDATE_USER_QUERY, {
-      id: user.id,
-      displayName: `${firstName} ${lastName}`.trim(),
-      metadata: {
-        firstName,
-        lastName,
-      },
-    });
-
-    if (error) {
-      toast.error('Unable to update profile', { id: 'updateProfile' });
-    } else if (data) {
+    try {
+      await mutateUser({
+        variables: {
+          id: user.id,
+          displayName: `${firstName} ${lastName}`.trim(),
+          metadata: {
+            firstName,
+            lastName,
+          },
+        },
+      });
       toast.success('Updated successfully', { id: 'updateProfile' });
+    } catch (error) {
+      toast.error('Unable to update profile', { id: 'updateProfile' });
     }
   };
 
@@ -114,10 +118,10 @@ const Profile = () => {
               <div className="w-full bg-gray-50 py-4 px-4 md:px-8 flex justify-end">
                 <button
                   type="submit"
-                  disabled={!isProfileFormDirty}
+                  disabled={!isProfileFormDirty || updatingProfile}
                   className="bg-gray-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-4 focus:ring-gray-700 focus:ring-opacity-20 hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-700"
                 >
-                  Update
+                  {updatingProfile ? 'Updating...' : 'Update'}
                 </button>
               </div>
             </form>
@@ -154,10 +158,10 @@ const Profile = () => {
               <div className="w-full bg-gray-50 py-4 px-4 md:px-8 flex justify-end">
                 <button
                   type="submit"
-                  disabled={!isPasswordFormValid || isLoading}
+                  disabled={!isPasswordFormValid || updatingPassword}
                   className="bg-gray-700 text-white py-2 px-4 rounded-md focus:outline-none focus:ring-4 focus:ring-gray-700 focus:ring-opacity-20 hover:bg-gray-600 transition disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-gray-700"
                 >
-                  Change password
+                  {updatingPassword ? 'Updating...' : 'Change password'}
                 </button>
               </div>
             </form>
