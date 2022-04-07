@@ -43,9 +43,11 @@ const Layout = () => {
 
   return (
     <div>
-      <header className="fixed top-0 inset-x-0 h-[60px] shadow bg-white">
+      <header className="fixed z-10 top-0 inset-x-0 h-[60px] shadow bg-white">
         <div className="container mx-auto px-4 py-3 flex justify-between">
-          <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
+          <Link to="/">
+            <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" />
+          </Link>
 
           <Menu as="div" className="relative z-50">
             <Menu.Button className="flex items-center space-x-px group">
