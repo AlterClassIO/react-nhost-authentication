@@ -23,7 +23,6 @@ const SignUp = () => {
       firstName,
       lastName,
     },
-    redirectTo: '/',
   });
 
   const handleOnSubmit = e => {
