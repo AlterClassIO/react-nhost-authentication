@@ -9,6 +9,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Layout from './components/Layout';
 import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
+import ResetPassword from './pages/ResetPassword';
 import Dashboard from './pages/Dashboard';
 import Profile from './pages/Profile';
 
@@ -21,6 +22,7 @@ function App() {
             <Routes>
               <Route path="sign-up" element={<SignUp />} />
               <Route path="sign-in" element={<SignIn />} />
+              <Route path="reset-password" element={<ResetPassword />} />
               <Route
                 path="/"
                 element={

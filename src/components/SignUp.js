@@ -35,68 +35,70 @@ const SignUp = () => {
   }
 
   return (
-    <div className="sm:rounded-xl sm:shadow-md sm:border border-opacity-50 bg-white px-4 sm:px-8 py-12 w-full max-w-lg flex flex-col items-center">
-      <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" width={180} />
+    <div className="w-full max-w-lg">
+      <div className="sm:rounded-xl sm:shadow-md sm:border border-opacity-50 sm:bg-white px-4 sm:px-8 py-12 flex flex-col items-center">
+        <img src={process.env.PUBLIC_URL + 'logo.svg'} alt="logo" width={180} />
 
-      <form onSubmit={handleOnSubmit} className="w-full">
-        <div className="mt-12 flex flex-col items-center space-y-6">
-          <div className="w-full flex gap-6">
+        <form onSubmit={handleOnSubmit} className="w-full">
+          <div className="mt-12 flex flex-col items-center space-y-6">
+            <div className="w-full flex gap-6">
+              <Input
+                label="First name"
+                value={firstName}
+                onChange={e => setFirstName(e.target.value)}
+                disabled={isLoading}
+                required
+              />
+              <Input
+                label="Last name"
+                value={lastName}
+                onChange={e => setLastName(e.target.value)}
+                disabled={isLoading}
+                required
+              />
+            </div>
             <Input
-              label="First name"
-              value={firstName}
-              onChange={e => setFirstName(e.target.value)}
+              type="email"
+              label="Email address"
+              value={email}
+              onChange={e => setEmail(e.target.value)}
               disabled={isLoading}
               required
             />
             <Input
-              label="Last name"
-              value={lastName}
-              onChange={e => setLastName(e.target.value)}
+              type="password"
+              label="Create password"
+              value={password}
+              onChange={e => setPassword(e.target.value)}
               disabled={isLoading}
               required
             />
           </div>
-          <Input
-            type="email"
-            label="Email address"
-            value={email}
-            onChange={e => setEmail(e.target.value)}
+
+          <button
+            type="submit"
             disabled={isLoading}
-            required
-          />
-          <Input
-            type="password"
-            label="Create password"
-            value={password}
-            onChange={e => setPassword(e.target.value)}
-            disabled={isLoading}
-            required
-          />
-        </div>
+            className="mt-6 w-full font-medium inline-flex justify-center items-center rounded-md p-3 text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed  disabled:hover:bg-blue-600 disabled:hover:border-bg-600 transition-colors"
+          >
+            {isLoading ? <Spinner size="sm" /> : 'Create account'}
+          </button>
 
-        <button
-          type="submit"
-          disabled={isLoading}
-          className="mt-6 w-full font-medium inline-flex justify-center items-center rounded-md p-3 text-white bg-blue-600 hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 disabled:opacity-50 disabled:cursor-not-allowed  disabled:hover:bg-blue-600 disabled:hover:border-bg-600 transition-colors"
-        >
-          {isLoading ? <Spinner size="sm" /> : 'Create account'}
-        </button>
+          {isError ? (
+            <p className="mt-4 text-red-500 text-center">{error?.message}</p>
+          ) : needsEmailVerification ? (
+            <p className="mt-4 text-orange-500 text-center">
+              Please check your mailbox and follow the verification link to
+              verify your email
+            </p>
+          ) : null}
+        </form>
+      </div>
 
-        {isError ? (
-          <p className="mt-4 text-red-500 text-center">{error?.message}</p>
-        ) : needsEmailVerification ? (
-          <p className="mt-4 text-orange-500 text-center">
-            Please check your mailbox and follow the verification link to verify
-            your email
-          </p>
-        ) : null}
-      </form>
-
-      <p className="mt-8 text-gray-500">
+      <p className="sm:mt-8 text-gray-500 text-center">
         Already have an account?{' '}
         <Link
           to="/sign-in"
-          className="text-blue-600 hover:text-blue-500 hover:underline hover:underline-offset-1 font-medium transition"
+          className="text-blue-600 hover:text-blue-500 hover:underline hover:underline-offset-1 transition"
         >
           Sign in
         </Link>
