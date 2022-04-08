@@ -17,17 +17,18 @@ const SignUp = () => {
     needsEmailVerification,
     isError,
     error,
-  } = useSignUpEmailPassword(email, password, {
+  } = useSignUpEmailPassword({
     displayName: `${firstName} ${lastName}`.trim(),
     metadata: {
       firstName,
       lastName,
     },
+    redirectTo: '/',
   });
 
   const handleOnSubmit = e => {
     e.preventDefault();
-    signUpEmailPassword();
+    signUpEmailPassword(email, password);
   };
 
   if (isSuccess) {

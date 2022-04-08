@@ -15,11 +15,11 @@ const SignIn = () => {
     needsEmailVerification,
     isError,
     error,
-  } = useSignInEmailPassword(email, password);
+  } = useSignInEmailPassword();
 
   const handleOnSubmit = e => {
     e.preventDefault();
-    signInEmailPassword();
+    signInEmailPassword(email, password);
   };
 
   if (isSuccess) {
