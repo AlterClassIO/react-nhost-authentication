@@ -1,11 +1,12 @@
 import { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { useUserData, useChangePassword } from '@nhost/react';
+import { useOutletContext } from 'react-router-dom';
+import { useChangePassword } from '@nhost/react';
 import { gql, useMutation } from '@apollo/client';
 import { toast } from 'react-hot-toast';
 import Input from '../components/Input';
 
-const UPDATE_USER_QUERY = gql`
+const UPDATE_USER_MUTATION = gql`
   mutation ($id: uuid!, $displayName: String!, $metadata: jsonb) {
     updateUser(
       pk_columns: { id: $id }
@@ -19,12 +20,12 @@ const UPDATE_USER_QUERY = gql`
 `;
 
 const Profile = () => {
-  const user = useUserData();
+  const { user } = useOutletContext();
 
   const { changePassword, isLoading: updatingPassword } = useChangePassword();
 
   const [mutateUser, { loading: updatingProfile }] =
-    useMutation(UPDATE_USER_QUERY);
+    useMutation(UPDATE_USER_MUTATION);
 
   const [firstName, setFirstName] = useState(user?.metadata?.firstName ?? '');
   const [lastName, setLastName] = useState(user?.metadata?.lastName ?? '');

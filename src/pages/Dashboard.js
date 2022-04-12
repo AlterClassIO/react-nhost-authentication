@@ -1,8 +1,8 @@
-import { useUserData } from '@nhost/react';
+import { useOutletContext } from 'react-router-dom';
 import { Helmet } from 'react-helmet';
 
 const Dashboard = () => {
-  const user = useUserData();
+  const { user } = useOutletContext();
 
   return (
     <>
@@ -14,7 +14,7 @@ const Dashboard = () => {
         <h2 className="text-3xl font-semibold">Dashboard</h2>
 
         <p className="mt-2 text-lg">
-          Welcome, {user?.metadata?.firstName}{' '}
+          Welcome, {user?.metadata?.firstName || 'stranger'}{' '}
           <span role="img" alt="hello">
             👋
           </span>

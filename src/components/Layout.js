@@ -1,6 +1,7 @@
 import { Fragment } from 'react';
-import { useUserData, useSignOut } from '@nhost/react';
+import { useUserId, useSignOut } from '@nhost/react';
 import { Outlet, Link } from 'react-router-dom';
+import { gql, useQuery } from '@apollo/client';
 import { Menu, Transition } from '@headlessui/react';
 import {
   ChevronDownIcon,
@@ -9,19 +10,32 @@ import {
   UserIcon,
 } from '@heroicons/react/outline';
 
+const GET_USER_QUERY = gql`
+  query GetUser($id: uuid!) {
+    user(id: $id) {
+      id
+      email
+      displayName
+      metadata
+      avatarUrl
+    }
+  }
+`;
+
 const Avatar = ({ src = '', alt = '' }) => (
-  <img
-    width={35}
-    height={35}
-    className="rounded-full bg-gray-100"
-    src={src}
-    alt={alt}
-  />
+  <div className="rounded-full bg-gray-100 overflow-hidden w-9 h-9">
+    {src ? <img src={src} alt={alt} /> : null}
+  </div>
 );
 
 const Layout = () => {
-  const user = useUserData();
+  const id = useUserId();
   const { signOut } = useSignOut();
+
+  const { loading, error, data } = useQuery(GET_USER_QUERY, {
+    variables: { id },
+  });
+  const user = data?.user;
 
   const menuItems = [
     {
@@ -110,7 +124,15 @@ const Layout = () => {
 
       <main className="mt-[60px]">
         <div className="container mx-auto px-4 py-12">
-          <Outlet />
+          {error ? (
+            <div className="flex justify-center">
+              <div className="rounded max-w-max py-1 px-4 bg-red-200 text-red-900">
+                Something went wrong. Try to refresh the page.
+              </div>
+            </div>
+          ) : !loading ? (
+            <Outlet context={{ user }} />
+          ) : null}
         </div>
       </main>
     </div>
