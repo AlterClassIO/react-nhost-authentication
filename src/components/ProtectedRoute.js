@@ -1,5 +1,4 @@
 import { useAuthenticationStatus } from '@nhost/react';
-import React from 'react';
 import { Navigate, useLocation } from 'react-router';
 import Spinner from './Spinner';
 
@@ -16,7 +15,7 @@ const ProtectedRoute = ({ children }) => {
   }
 
   if (!isAuthenticated) {
-    return <Navigate to="/sign-in" state={{ from: location }} />;
+    return <Navigate to="/sign-in" state={{ from: location }} replace />;
   }
 
   return children;

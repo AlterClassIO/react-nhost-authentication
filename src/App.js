@@ -31,7 +31,7 @@ function App() {
                   </ProtectedRoute>
                 }
               >
-                <Route path="" element={<Dashboard />} />
+                <Route index element={<Dashboard />} />
                 <Route path="profile" element={<Profile />} />
               </Route>
             </Routes>
